@@ -46,8 +46,43 @@ function playRound(playerSelection, computerSelection){
             break;
     }
     return statement;
+
 }
 
+playerVictoriesNr=0;
+nrOfRounds=0;
+
+function btnClicked(event){
+    const btn = event.target;
+    const result = playRound(btn.textContent,getComputerChoice()); //works with this because this is a reference to the button that triggered the event
+    const div = document.querySelector('.result');
+    const p = document.createElement('p');
+    p.textContent=result;
+    div.appendChild(p);
+
+    if (result.includes("Win")){
+        playerVictoriesNr++;
+    }
+    nrOfRounds++;
+    const div2 = document.querySelector('.score');
+    div2.textContent="Player: " + playerVictoriesNr + " / " + (nrOfRounds-playerVictoriesNr)+" :Computer";
+    if (nrOfRounds ==5){
+        if(playerVictoriesNr > 2){
+            div2.style.whiteSpace="pre";
+            div2.textContent+="\r\nYou win the game!";
+        } else {
+            div2.style.whiteSpace="pre";
+            div2.textContent+="\r\nYou lose the game!";
+        }
+        btns.forEach((btn) => btn.removeEventListener("click", btnClicked) );
+    }
+}
+
+const btns = document.querySelectorAll('button');
+
+btns.forEach((btn) => btn.addEventListener("click", btnClicked) );
+
+/*
 function game(){
     playerVictoriesNr=0;
     for(let i=1; i<=5; i++){
@@ -67,4 +102,5 @@ function game(){
 }
 
 game()
+*/
 //Note that draws turns are considered wins by the computer!!!
